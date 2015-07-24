@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div>
+    <form action="/files" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Submit">
+    </form>
+</div>
+<div>
+    <ul id="file-list"></ul>
+</div>
+
+<script>
+    var fileList = document.querySelector("#file-list");
+    (function() {
+        fetch("/files").then(function(response) {
+            response.json().then(function(data) {
+                if (Array.isArray(data) && data.length) {
+                    for (var i=0;i<data.length;i++) {
+                        var li = document.createElement("li");
+                        var name = data[i];
+                        li.innerHTML = "<a href='/files/"+name+"'>"+name+"</a>";
+                        fileList.appendChild(li);
+                    }
+                }
+            });
+        })
+    })();
+</script>
+</body>
+</html>
